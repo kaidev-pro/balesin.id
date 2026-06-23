@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary-navy: #1F2F6B;
+  --color-soft-blue: #5DADEC;
+  --color-mint: #7EE8C6;
+  --color-cream: #FFF8ED;
+  --color-accent-orange: #FFB347;
+  --color-text-dark: #1F2937;
+  --color-muted-text: #64748B;
+  --font-sans: var(--font-plus-jakarta);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #FFF8ED;
+  color: #1F2937;
+  font-family: var(--font-plus-jakarta), sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF8ED;
+}
+::-webkit-scrollbar-thumb {
+  background: #5DADEC;
+  border-radius: 10px;
+}
+
+/* Glassmorphism helpers */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Floating animation for hero bubbles */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

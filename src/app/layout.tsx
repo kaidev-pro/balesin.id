@@ -1,0 +1,51 @@
+import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
+import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Balesin.id — AI Pembantu Bikin Pesan Siap Kirim",
+  description:
+    "Buat balasan chat, izin kerja, komplain sopan, caption jualan, dan translate Jepang natural dalam beberapa detik bersama Bale.",
+  keywords: [
+    "bikin pesan AI",
+    "balas chat AI",
+    "izin kerja",
+    "komplain sopan",
+    "caption jualan",
+    "translate Jepang",
+    "Balesin.id",
+  ],
+  openGraph: {
+    title: "Balesin.id — AI Pembantu Bikin Pesan Siap Kirim",
+    description:
+      "Buat balasan chat, izin kerja, komplain sopan, caption jualan, dan translate Jepang natural dalam beberapa detik bersama Bale.",
+    type: "website",
+    images: [{ url: "/brand/logo-balesin.png", width: 1200, height: 630 }],
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="id"
+      className={`${plusJakartaSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col">{children}</body>
+    </html>
+  );
+}
