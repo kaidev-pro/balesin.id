@@ -33,7 +33,23 @@ export const metadata: Metadata = {
     description:
       "Buat balasan chat, izin kerja, komplain sopan, caption jualan, dan translate Jepang natural dalam beberapa detik bersama Bale.",
     type: "website",
-    images: [{ url: "/brand/logo-balesin.png", width: 1200, height: 630 }],
+    images: [
+      {
+        url: `https://kaidev-pro.github.io/balesin.id/brand/logo-balesin.png`,
+        width: 1200,
+        height: 630,
+        alt: "Balesin.id — AI Pembantu Bikin Pesan",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Balesin.id — AI Pembantu Bikin Pesan Siap Kirim",
+    description:
+      "Buat balasan chat, izin kerja, komplain sopan, caption jualan, dan translate Jepang natural dalam beberapa detik bersama Bale.",
+    images: [
+      `https://kaidev-pro.github.io/balesin.id/brand/logo-balesin.png`,
+    ],
   },
 };
 
