@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/config";
 import { useState } from "react";
 
 const navLinks = [
@@ -18,7 +19,7 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#" className="flex items-center gap-2">
           <Image
-            src="/brand/logo-balesin.png"
+            src={`${BASE_PATH}/brand/logo-balesin.png`}
             alt="Balesin.id Logo"
             width={140}
             height={45}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/config";
 
 const footerLinks = [
   { label: "Fitur", href: "#fitur" },
@@ -16,7 +17,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-1">
             <Image
-              src="/brand/logo-balesin.png"
+              src={`${BASE_PATH}/brand/logo-balesin.png`}
               alt="Balesin.id Logo"
               width={140}
               height={45}

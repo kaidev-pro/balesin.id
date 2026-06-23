@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BASE_PATH } from "@/lib/config";
 
 const bubbles = [
   { text: "Mau versi sopan?", x: "right", delay: "0s" },
@@ -48,7 +49,7 @@ export default function HeroSection() {
         <div className="relative flex flex-1 items-center justify-center">
           <div className="relative">
             <Image
-              src="/brand/logo-balesin.png"
+              src={`${BASE_PATH}/brand/logo-balesin.png`}
               alt="Balesin.id — Bale"
               width={400}
               height={400}
