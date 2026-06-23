@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Category, Tone, GenerateResult } from "@/lib/generatePrompt";
 import { mockGenerate } from "@/lib/mockGenerate";
+import { aiGenerate } from "@/lib/aiGenerate";
 
 const categories: Category[] = [
   "Balasan Chat",
@@ -31,6 +32,35 @@ export default function GeneratorCard() {
   const [error, setError] = useState("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
+  // API key management
+  const [apiKey, setApiKey] = useState("");
+  const [useRealAI, setUseRealAI] = useState(false);
+  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+
+  // Load saved API key from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("balesin_api_key");
+    if (saved) {
+      setApiKey(saved);
+      setUseRealAI(true);
+    }
+  }, []);
+
+  const handleSaveApiKey = () => {
+    if (apiKey.trim()) {
+      localStorage.setItem("balesin_api_key", apiKey.trim());
+      setUseRealAI(true);
+      setShowApiKeyInput(false);
+    }
+  };
+
+  const handleClearApiKey = () => {
+    localStorage.removeItem("balesin_api_key");
+    setApiKey("");
+    setUseRealAI(false);
+    setShowApiKeyInput(false);
+  };
+
   const handleGenerate = async () => {
     if (!input.trim()) {
       setError("Ceritain dulu situasinya, nanti Bale bantuin.");
@@ -40,13 +70,20 @@ export default function GeneratorCard() {
     setLoading(true);
     setResults(null);
 
-    // Simulate network delay
     try {
-      await new Promise((r) => setTimeout(r, 1500));
-      const res = mockGenerate({ input, category, tone });
-      setResults(res.results);
-    } catch {
-      setError("Maaf, Bale lagi bingung sebentar. Coba lagi ya.");
+      if (useRealAI && apiKey) {
+        // Use real AI
+        const res = await aiGenerate(input, category, tone, apiKey);
+        setResults(res.results);
+      } else {
+        // Use mock
+        await new Promise((r) => setTimeout(r, 1200));
+        const res = mockGenerate({ input, category, tone });
+        setResults(res.results);
+      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Terjadi kesalahan.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -58,7 +95,6 @@ export default function GeneratorCard() {
       setCopiedIndex(index);
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch {
-      // Fallback
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
@@ -81,6 +117,77 @@ export default function GeneratorCard() {
             Ceritain situasinya,{" "}
             <span className="text-[#5DADEC]">Bale bantu susun pesannya.</span>
           </h2>
+
+          {/* AI Status */}
+          <div className="mt-4 flex justify-center">
+            {useRealAI ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700 ring-1 ring-green-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                AI Aktif (Groq)
+                <button
+                  onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+                  className="ml-1 text-green-500 hover:text-green-700"
+                >
+                  <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+              </span>
+            ) : (
+              <button
+                onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+                className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF8ED] px-3 py-1 text-xs font-medium text-[#64748B] ring-1 ring-[#1F2F6B]/10 transition-colors hover:bg-[#5DADEC]/10 hover:text-[#5DADEC]"
+              >
+                <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Aktifkan AI asli
+              </button>
+            )}
+          </div>
+
+          {/* API Key Input */}
+          {showApiKeyInput && (
+            <div className="mt-4 rounded-2xl border border-[#1F2F6B]/10 bg-[#FFF8ED]/50 p-4">
+              <p className="mb-2 text-xs text-[#64748B]">
+                Masukkan{" "}
+                <a
+                  href="https://console.groq.com/keys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-[#5DADEC] underline"
+                >
+                  Groq API Key
+                </a>{" "}
+                (gratis, cepat).
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  placeholder="gsk_..."
+                  className="flex-1 rounded-xl border-2 border-[#1F2F6B]/10 bg-white px-3 py-2 text-sm text-[#1F2937] focus:border-[#5DADEC] focus:outline-none focus:ring-2 focus:ring-[#5DADEC]/20"
+                />
+                {useRealAI ? (
+                  <button
+                    onClick={handleClearApiKey}
+                    className="rounded-xl bg-red-50 px-4 py-2 text-xs font-medium text-red-600 transition-colors hover:bg-red-100"
+                  >
+                    Matikan
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleSaveApiKey}
+                    className="rounded-xl bg-[#1F2F6B] px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-[#1F2F6B]/90"
+                  >
+                    Simpan
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Textarea */}
           <div className="mt-8">
@@ -140,7 +247,7 @@ export default function GeneratorCard() {
           >
             {loading ? (
               <span className="flex items-center gap-2">
-                Bale lagi nyusun kata
+                {useRealAI ? "Bale lagi mikir pake AI" : "Bale lagi nyusun kata"}
                 <span className="inline-flex">
                   <span className="animate-[dot_1.4s_ease-in-out_infinite]">.</span>
                   <span className="animate-[dot_1.4s_ease-in-out_infinite_0.2s]">.</span>
@@ -160,7 +267,9 @@ export default function GeneratorCard() {
           {/* Success message */}
           {results && !loading && (
             <p className="mt-6 text-center text-base font-medium text-[#1F2F6B]">
-              Nih, Bale buatin beberapa versi. Tinggal copy yang paling cocok!
+              {useRealAI
+                ? "Nih, AI udah buatin beberapa versi. Tinggal copy yang paling cocok!"
+                : "Nih, Bale buatin beberapa versi. Tinggal copy yang paling cocok!"}
             </p>
           )}
 
