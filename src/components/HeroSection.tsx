@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BASE_PATH } from "@/lib/config";
+import { HeroClouds } from "@/components/CloudDecorations";
 
 const bubbles = [
   { text: "Mau versi sopan?", x: "right", delay: "0s" },
@@ -16,6 +17,9 @@ export default function HeroSection() {
         <div className="animate-mesh-delay absolute top-20 -right-40 h-[600px] w-[600px] rounded-full bg-[#7EE8C6]/12 blur-[120px]" />
         <div className="animate-mesh-slow absolute -bottom-20 left-1/3 h-[400px] w-[400px] rounded-full bg-[#FFB347]/10 blur-[80px]" />
       </div>
+
+      {/* Cloud decorations */}
+      <HeroClouds />
 
       <div className="relative mx-auto flex min-h-[calc(100vh-72px)] max-w-6xl flex-col items-center gap-12 px-4 py-16 sm:px-6 lg:flex-row lg:py-20">
         {/* Left: text */}
