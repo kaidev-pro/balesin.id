@@ -69,15 +69,7 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <section id="fitur" className="relative scroll-mt-24 py-24 overflow-hidden">
-      {/* Decorative clouds */}
-      <svg className="animate-float absolute -right-8 top-12 h-16 w-auto opacity-[0.05] sm:h-24" viewBox="0 0 160 80" fill="none">
-        <path d="M140 55c0 13.8-11.2 25-25 25H45c-16.6 0-30-13.4-30-30 0-14.3 10-26.3 23.3-29.3C42.7 8.3 57 0 74 0c22.1 0 40.8 14.7 46.8 34.8C129.4 31.5 140 41.8 140 55z" fill="#5DADEC" />
-      </svg>
-      <svg className="animate-mesh-slow absolute -left-6 bottom-16 h-12 w-auto opacity-[0.06] sm:h-20" viewBox="0 0 160 80" fill="none">
-        <path d="M140 55c0 13.8-11.2 25-25 25H45c-16.6 0-30-13.4-30-30 0-14.3 10-26.3 23.3-29.3C42.7 8.3 57 0 74 0c22.1 0 40.8 14.7 46.8 34.8C129.4 31.5 140 41.8 140 55z" fill="#7EE8C6" />
-      </svg>
-
+    <section id="fitur" className="relative scroll-mt-24 py-24">
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="text-center">
           <span className="inline-block rounded-full bg-[#5DADEC]/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#5DADEC]">

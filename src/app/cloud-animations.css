@@ -1,0 +1,56 @@
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(calc(100vw + 100%));
+  }
+}
+
+@keyframes cloud-drift-reverse {
+  from {
+    transform: translateX(calc(100vw + 100%));
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes cloud-bob {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.02);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-cloud-drift {
+  animation: cloud-drift 45s linear infinite;
+}
+
+.animate-cloud-drift-reverse {
+  animation: cloud-drift-reverse 55s linear infinite;
+}
+
+.animate-cloud-drift-slow {
+  animation: cloud-drift 70s linear infinite;
+}
+
+.animate-cloud-bob {
+  animation: cloud-bob 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-cloud-drift,
+  .animate-cloud-drift-reverse,
+  .animate-cloud-drift-slow,
+  .animate-cloud-bob {
+    animation: none;
+  }
+}
