@@ -1,22 +1,22 @@
 import { Category, Tone, GenerateResponse } from "./generatePrompt";
 
-// Groq API — client-side, free tier
+// Groq API — client-side BYOK
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = "llama-3.3-70b-versatile";
 
-const SYSTEM_PROMPT = `Kamu adalah Bale, asisten AI dari Balesin.id yang membantu user membuat pesan yang natural, sopan, dan siap dikirim.
-
-ATURAN PENTING:
-- Gunakan INFORMASI DARI INPUT USER sebagai konteks utama
-- Jangan mengarang situasi baru — ikuti apa yang ditulis user
-- Balas dalam bahasa Indonesia yang natural dan enak dibaca
-- Sesuaikan output dengan kategori dan tone yang dipilih
-- Panjang output sesuai kebutuhan — jangan terlalu pendek atau panjang
-- Jangan pakai emoji
+const SYSTEM_PROMPT = `Kamu adalah Bale, asisten AI dari Balesin.id.
+Tugasmu membantu user membuat pesan yang natural, sopan, dan siap dikirim.
+Gunakan bahasa Indonesia yang enak dibaca.
+Jangan terlalu kaku.
+Jangan terlalu panjang kecuali dibutuhkan.
+Jangan pakai emoji.
 
 OUTPUT: JSON valid dengan format:
 {
   "results": [
-    { "title": "Judul versi", "text": "Isi pesan" }
+    { "title": "Versi Singkat", "text": "..." },
+    { "title": "Versi Sopan", "text": "..." },
+    { "title": "Versi Hangat", "text": "..." }
   ]
 }
 
@@ -56,6 +56,10 @@ export async function aiGenerate(
   tone: Tone,
   apiKey: string
 ): Promise<GenerateResponse> {
+  if (!apiKey?.trim()) {
+    throw new Error("Hubungkan Groq API Key dulu untuk memakai Bale Pintar.");
+  }
+
   const response = await fetch(GROQ_API_URL, {
     method: "POST",
     headers: {
@@ -63,7 +67,7 @@ export async function aiGenerate(
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: "llama-3.1-8b-instant",
+      model: GROQ_MODEL,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: buildUserPrompt(input, category, tone) },
@@ -75,15 +79,14 @@ export async function aiGenerate(
   });
 
   if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err?.error?.message || `API error: ${response.status}`);
+    throw new Error("Gagal menghubungi Groq API.");
   }
 
   const data = await response.json();
   const content = data.choices?.[0]?.message?.content;
 
   if (!content) {
-    throw new Error("Tidak ada respons dari AI.");
+    throw new Error("Tidak ada respons dari Groq.");
   }
 
   try {
@@ -93,6 +96,12 @@ export async function aiGenerate(
     }
     return parsed as GenerateResponse;
   } catch {
-    throw new Error("Gagal memproses respons AI.");
+    throw new Error("Gagal memproses respons dari Groq.");
   }
+}
+
+// Mask API key for display: gsk_****abcd
+export function maskApiKey(key: string): string {
+  if (!key || key.length < 8) return "****";
+  return `${key.slice(0, 4)}****${key.slice(-4)}`;
 }
