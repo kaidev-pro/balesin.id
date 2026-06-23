@@ -3,9 +3,9 @@ import { BASE_PATH } from "@/lib/config";
 import { HeroClouds } from "@/components/CloudDecorations";
 
 const bubbles = [
-  { text: "Mau versi sopan?", x: "right", delay: "0s" },
-  { text: "Tinggal copy!", x: "left", delay: "0.5s" },
-  { text: "Bale rapihin dulu ya.", x: "right", delay: "1s" },
+  { text: "Mau versi sopan?", position: "top-0 -right-2 sm:-right-8 lg:top-0" },
+  { text: "Tinggal copy!", position: "top-1/2 -left-2 sm:-left-8 -translate-y-1/2 lg:bottom-16 lg:top-auto lg:translate-y-0" },
+  { text: "Bale rapihin dulu ya.", position: "bottom-0 -right-2 sm:-right-8 lg:bottom-0" },
 ];
 
 export default function HeroSection() {
@@ -89,16 +89,14 @@ export default function HeroSection() {
               className="h-48 w-auto object-contain sm:h-64 lg:h-80"
             />
 
-            {/* Floating bubbles */}
+            {/* Floating bubbles — positioned to not overlap logo on mobile */}
             {bubbles.map((b, i) => (
               <div
                 key={i}
-                className={`animate-float absolute ${
-                  b.x === "right" ? "-right-4 sm:-right-8" : "-left-4 sm:-left-8"
-                } ${i === 0 ? "top-0" : i === 1 ? "bottom-16" : "bottom-0"}`}
-                style={{ animationDelay: b.delay }}
+                className={`animate-float absolute ${b.position}`}
+                style={{ animationDelay: `${i * 0.5}s` }}
               >
-                <div className="glass rounded-2xl px-4 py-2 text-sm font-medium text-[#1F2F6B] shadow-lg shadow-[#1F2F6B]/5 whitespace-nowrap ring-1 ring-[#1F2F6B]/5">
+                <div className="glass rounded-xl px-3 py-1.5 text-xs font-medium text-[#1F2F6B] shadow-lg shadow-[#1F2F6B]/5 whitespace-nowrap ring-1 ring-[#1F2F6B]/5 sm:rounded-2xl sm:px-4 sm:py-2 sm:text-sm">
                   {b.text}
                 </div>
               </div>
