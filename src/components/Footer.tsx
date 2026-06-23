@@ -2,13 +2,13 @@ import Image from "next/image";
 import { BASE_PATH } from "@/lib/config";
 
 const footerLinks = [
-  { label: "Fitur", href: "#fitur" },
-  { label: "Contoh", href: "#contoh" },
-  { label: "Cara Pakai", href: "#cara-pakai" },
-  { label: "Hubungi Kami", href: "#kontak" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Syarat & Ketentuan", href: "/terms" },
+  { label: "Fitur", href: `${BASE_PATH}#fitur` },
+  { label: "Contoh", href: `${BASE_PATH}#contoh` },
+  { label: "Cara Pakai", href: `${BASE_PATH}#cara-pakai` },
+  { label: "Hubungi Kami", href: `${BASE_PATH}#kontak` },
+  { label: "FAQ", href: `${BASE_PATH}#faq` },
+  { label: "Privacy Policy", href: `${BASE_PATH}/privacy` },
+  { label: "Syarat & Ketentuan", href: `${BASE_PATH}/terms` },
 ];
 
 export default function Footer() {

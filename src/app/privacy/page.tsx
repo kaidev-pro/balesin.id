@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { BASE_PATH } from "@/lib/config";
 
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#FFF8ED]">
       <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
-        <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-[#5DADEC] hover:text-[#1F2F6B]">
+        <Link href={`${BASE_PATH}/`} className="mb-8 inline-flex items-center gap-2 text-sm text-[#5DADEC] hover:text-[#1F2F6B]">
           <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
